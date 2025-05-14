@@ -7,6 +7,7 @@ import Projects from './components/Projects';
 import Skills from './components/Skills';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import { pageview } from './utils/analytics';
 import './App.css';
 
 class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
@@ -35,6 +36,8 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
 function App() {
   useEffect(() => {
     console.log('App component mounted');
+    // Track initial page view
+    pageview(window.location.pathname);
   }, []);
 
   return (
