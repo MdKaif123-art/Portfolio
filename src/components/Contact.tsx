@@ -8,7 +8,7 @@ interface FormState {
   message: string;
 }
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+const BACKEND_URL = 'https://portfolio-backend-j8yz.onrender.com';
 
 const Contact: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
