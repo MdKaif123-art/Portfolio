@@ -1,4 +1,7 @@
 import React, { useEffect, useRef } from 'react';
+import vitmisqube from '../assets/images/vitmisqube.png';
+import quizingsphere from '../assets/images/quizingsphere.png';
+import tocRegex from '../assets/images/toc-regex.png';
 
 interface ProjectCardProps {
   title: string;
@@ -62,23 +65,21 @@ const Projects: React.FC = () => {
     {
       title: 'VIT MISQUBE',
       description: 'Comprehensive resource for VIT question papers',
-      image:'src/assets/images/vitmisqube.png',
+      image: vitmisqube,
       link: 'https://vitmisqube.netlify.app/'
     },
     {
       title: 'QuizingSphere',
       description: 'NPTEL Quiz Practice Platform for interactive learning',
-      image: 'src/assets/images/quizingsphere.png',
+      image: quizingsphere,
       link: 'https://quizingsphere.netlify.app/'
     },
     {
       title: 'Regex to NFA/DFA Converter',
       description: 'Convert regular expressions to finite automata with visual representation',
-      image: 'src/assets/images/toc-regex.png',
+      image: tocRegex,
       link: 'https://toc-regex.netlify.app/'
-    },
-   
-    
+    }
   ];
 
   return (

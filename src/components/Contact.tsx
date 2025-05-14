@@ -5,8 +5,6 @@ import axios from 'axios';
 interface FormState {
   name: string;
   email: string;
-  mobile: string;
-  subject: string;
   message: string;
 }
 
@@ -17,8 +15,6 @@ const Contact: React.FC = () => {
   const [formData, setFormData] = useState<FormState>({
     name: '',
     email: '',
-    mobile: '',
-    subject: '',
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -61,28 +57,16 @@ const Contact: React.FC = () => {
     setSubmitMessage('');
     
     try {
-      const response = await axios.post(`${BACKEND_URL}/send`, formData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        withCredentials: true
+      const response = await axios.post(`${BACKEND_URL}/api/contact`, formData);
+      setSubmitMessage('Your message has been sent successfully!');
+      setFormData({
+        name: '',
+        email: '',
+        message: '',
       });
-      
-      if (response.data.success) {
-        setSubmitMessage('Your message has been sent successfully!');
-        setFormData({
-          name: '',
-          email: '',
-          mobile: '',
-          subject: '',
-          message: '',
-        });
-      } else {
-        throw new Error(response.data.message || 'Failed to send message');
-      }
     } catch (error: any) {
       console.error('Contact form error:', error);
-      setSubmitMessage(error.response?.data?.message || 'Failed to send message. Please try again.');
+      setSubmitMessage(error.response?.data?.error || 'Failed to send message. Please try again.');
     } finally {
       setIsSubmitting(false);
       setTimeout(() => {
@@ -155,25 +139,6 @@ const Contact: React.FC = () => {
                 onChange={handleChange}
                 placeholder="Email Address"
                 required
-                className="bg-[#0f1624] border border-[#00c6ff] text-white p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-[#00c6ff] focus:bg-[#0f1624]/70 transition-all"
-              />
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input
-                type="text"
-                name="mobile"
-                value={formData.mobile}
-                onChange={handleChange}
-                placeholder="Mobile Number"
-                className="bg-[#0f1624] border border-[#00c6ff] text-white p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-[#00c6ff] focus:bg-[#0f1624]/70 transition-all"
-              />
-              <input
-                type="text"
-                name="subject"
-                value={formData.subject}
-                onChange={handleChange}
-                placeholder="Email Subject"
                 className="bg-[#0f1624] border border-[#00c6ff] text-white p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-[#00c6ff] focus:bg-[#0f1624]/70 transition-all"
               />
             </div>
