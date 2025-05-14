@@ -1,53 +1,59 @@
-import express from 'express';
-import nodemailer from 'nodemailer';
-import cors from 'cors';
-import dotenv from 'dotenv';
-
-dotenv.config();
+const express = require('express');
+const cors = require('cors');
+const nodemailer = require('nodemailer');
 
 const app = express();
+const port = process.env.PORT || 5000;
 
+// CORS configuration
 app.use(cors({
-  origin: '*',
+  origin: ['https://mohammedkaifk-portfolio.netlify.app', 'http://localhost:5173'],
   methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Contact-Me'],
+  credentials: true
 }));
 
 app.use(express.json());
 
+// Create transporter
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
+    user: 'mdkaif196905@gmail.com',
+    pass: 'ehmu omsp lagz ockq'
   }
 });
 
-app.post('/send', async (req, res) => {
-  try {
-    const { name, email, mobile, subject, message } = req.body;
+// Contact form endpoint
+app.post('/api/contact', async (req, res) => {
+  const { name, email, message } = req.body;
 
+  try {
+    // Email options
     const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_USER,
-      subject: `Portfolio Contact: ${subject || 'New Message'}`,
+      from: 'mdkaif196905@gmail.com',
+      to: 'mdkaif196905@gmail.com',
+      subject: `Portfolio Contact Form - Message from ${name}`,
       text: `
         Name: ${name}
         Email: ${email}
-        Mobile: ${mobile || 'Not provided'}
         Message: ${message}
       `
     };
 
+    // Send email
     await transporter.sendMail(mailOptions);
-    res.status(200).json({ message: 'Email sent successfully' });
+    res.status(200).json({ message: 'Email sent successfully!' });
   } catch (error) {
     console.error('Error sending email:', error);
-    res.status(500).json({ message: 'Failed to send email' });
+    res.status(500).json({ error: 'Failed to send email' });
   }
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'Server is running' });
+});
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
